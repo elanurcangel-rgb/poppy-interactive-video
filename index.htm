@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>Dual Sync Video Switch</title>
+<head>
+<link rel="stylesheet" href="style.css">
+
+<body>
+
+<button id="startBtn"> Başlat</button>
+
+<div id="wrap">
+    <div id="label"> A Aktif</div>
+    <video id="videoA" src="video1.mp4"></video>
+    <video id="videoB" src="video2.mp4"></video>
+</div>
+<h1>Poppy ve Paraşütü</h1> 
+<p>Poppy'nin paraşütü ona yardım edecek mi? Görmek için A veya B tuşuna bas!</p>
+
+<script>
+const A = document.getElementById("videoA");
+const B = document.getElementById("videoB");
+const label = document.getElementById("label");
+const startBtn = document.getElementById("startBtn");
+
+let running = false;
+
+
+startBtn.onclick = ()=>{
+    A.play(); B.play();
+    A.muted=false; B.muted=true; 
+    running = true;
+    startBtn.style.display="none";
+}
+
+function switchCam(cam){
+    if(!running) return alert("Önce ▶ Başlat'a bas.");
+    
+    const t = A.currentTime;
+    A.currentTime = t;
+    B.currentTime = t;
+
+    if(cam==="A"){
+        A.style.opacity=1; B.style.opacity=0;
+        A.muted=false; B.muted=true;
+        label.innerText="Kamera A Aktif";
+    }else{
+        A.style.opacity=0; B.style.opacity=1;
+        A.muted=true; B.muted=false;
+        label.innerText="Kamera B Aktif";
+    }
+}
+
+
+document.addEventListener("keydown",(e)=>{
+    if(e.key==="a") switchCam("A");
+    if(e.key==="b") switchCam("B");
+});
+</script>
+
+</body>
+</html>
